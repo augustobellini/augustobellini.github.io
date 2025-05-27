@@ -3,20 +3,20 @@ name: Descomprimir Portfolio
 on:
   push:
     branches:
-      - main
+      - main  # Si usas "master", cámbialo aquí
 
 jobs:
   unzip-portfolio:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Da permisos de escritura al token
+      contents: write  # Permisos explícitos para escribir
 
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
-          persist-credentials: false  # Importante para autenticación
-          fetch-depth: 0
+          # Forzar autenticación con token
+          persist-credentials: false  
 
       - name: Eliminar archivos antiguos
         run: |
@@ -33,7 +33,10 @@ jobs:
           git config --global user.email "actions@github.com"
 
       - name: Subir cambios
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Token de autenticación
         run: |
+          git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/augustobellini/augustobellini.github.io.git
           git add .
           git commit -m "Descomprimir Portfolio"
           git push origin HEAD:main
