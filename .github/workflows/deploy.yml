@@ -1,42 +1,40 @@
-name: Descomprimir Portfolio
+name: Descomprimir y Desplegar
 
 on:
   push:
     branches:
-      - main  # Si usas "master", cámbialo aquí
+      - main  # Cambia a "master" si tu rama principal tiene ese nombre
 
 jobs:
-  unzip-portfolio:
+  deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Permisos explícitos para escribir
+      contents: write  # Permiso explícito para escribir en el repo
 
     steps:
-      - name: Checkout Repo
+      - name: Checkout del repositorio
         uses: actions/checkout@v4
         with:
-          # Forzar autenticación con token
-          persist-credentials: false  
+          persist-credentials: false  # Evita conflictos de credenciales
 
-      - name: Eliminar archivos antiguos
+      - name: Eliminar archivos antiguos (excepto .git, .github y el ZIP)
         run: |
           find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name '.github' ! -name 'Portfolio.zip' -exec rm -rf {} +
 
       - name: Descomprimir Portfolio.zip
         run: |
-          unzip Portfolio.zip -d ./
-          rm Portfolio.zip
+          unzip -o Portfolio.zip -d ./  # -o sobrescribe sin preguntar
+          rm -f Portfolio.zip  # Elimina el ZIP tras descomprimir
 
       - name: Configurar Git
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-      - name: Subir cambios
+      - name: Subir cambios al repositorio
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Token de autenticación
         run: |
-          git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/augustobellini/augustobellini.github.io.git
           git add .
-          git commit -m "Descomprimir Portfolio"
+          git commit -m "🚀 Deploy automático: Sitio actualizado"
           git push origin HEAD:main
