@@ -19,7 +19,7 @@ jobs:
       - name: Descomprimir Portfolio.zip
         run: |
           unzip Portfolio.zip -d ./
-          rm Portfolio.zip  # Elimina el ZIP después de descomprimir
+          rm Portfolio.zip
 
       - name: Configurar permisos
         run: git config --global --add safe.directory /github/workspace
@@ -28,6 +28,7 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/augustobellini/augustobellini.github.io.git
           git add .
           git commit -m "Descomprimir Portfolio"
-          git push
+          git push origin main
