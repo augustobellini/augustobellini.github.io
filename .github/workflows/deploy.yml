@@ -3,14 +3,20 @@ name: Descomprimir Portfolio
 on:
   push:
     branches:
-      - main  # Cambia a "master" si es necesario
+      - main
 
 jobs:
   unzip-portfolio:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Da permisos de escritura al token
+
     steps:
-      - name: Descargar repositorio
+      - name: Checkout Repo
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false  # Importante para autenticación
+          fetch-depth: 0
 
       - name: Eliminar archivos antiguos
         run: |
@@ -21,14 +27,13 @@ jobs:
           unzip Portfolio.zip -d ./
           rm Portfolio.zip
 
-      - name: Configurar permisos
-        run: git config --global --add safe.directory /github/workspace
-
-      - name: Subir cambios
+      - name: Configurar Git
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/augustobellini/augustobellini.github.io.git
+
+      - name: Subir cambios
+        run: |
           git add .
           git commit -m "Descomprimir Portfolio"
-          git push origin main
+          git push origin HEAD:main
