@@ -118,9 +118,15 @@ section.s{padding-block:clamp(48px,7vw,96px)}
 .shot{position:relative;aspect-ratio:1360/780;background:#000;overflow:hidden;max-width:100%}
 .shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .55s ease,transform .9s cubic-bezier(.2,.8,.2,1);user-select:none;-webkit-user-drag:none}
 .shot img.b{opacity:0}
-.win:hover .shot img.b,.win.flip .shot img.b{opacity:1}
-.win:hover .shot img.a,.win.flip .shot img.a{opacity:0}
-.win:hover .shot img,.win.flip .shot img{transform:scale(1.025)}
+.dev:hover .shot img.b,.dev.flip .shot img.b{opacity:1}
+.dev:hover .shot img.a,.dev.flip .shot img.a{opacity:0}
+.dev:hover .shot img,.dev.flip .shot img{transform:scale(1.025)}
+.dev{position:relative}
+.phone{position:absolute;right:-3%;bottom:-14px;width:25%;z-index:2;display:block;text-decoration:none}
+.pbody{display:block;border-radius:clamp(8px,1.3vw,15px);background:#0b0a12;padding:clamp(3px,.6vw,6px);border:1px solid rgba(255,255,255,.14);box-shadow:0 30px 60px -16px rgba(20,10,60,.7),0 0 0 1px rgba(255,255,255,.06);transition:box-shadow .4s,transform .4s}
+.dev:hover .pbody{transform:translateY(-4px);box-shadow:0 50px 90px -26px rgba(255,120,220,.5)}
+.pshot.shot{display:block;aspect-ratio:720/1320;border-radius:clamp(4px,.8vw,9px)}
+.pshot::after{content:"";position:absolute;top:1.6%;left:50%;width:clamp(6px,1.2vw,11px);aspect-ratio:1;border-radius:50%;background:#000;transform:translateX(-50%);z-index:2}
 .meta{display:flex;justify-content:space-between;align-items:baseline;gap:12px 20px;flex-wrap:wrap;padding:22px 4px 0}
 .meta h3{font-size:clamp(18px,2vw,24px)}
 .meta .tg{font:400 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
@@ -299,13 +305,14 @@ c_eyebrow:"Contact",c_h:"Let's talk about your project",foot:"Rosario, Argentina
 
 const WEB=[
  {n:"Ants Solutions",url:"https://antsolutions.com.ar",img:["ants-1","ants-2"],es:"Agencia de software",en:"Software agency"},
+ {n:"Data365",url:"https://data365.news",img:["data365-1","data365-2"],phone:["data365-m1","data365-m2"],es:"Portal de noticias",en:"News portal"},
  {n:"Red Flint",url:"https://redflint.com.ar",img:["redflint-1","redflint-2"],es:"Control de calidad de granos",en:"Grain quality control"},
- {n:"Tecnogran",img:["tecnogran-1","tecnogran-2"],es:"Insumos y fumigación",en:"Supplies and fumigation"},
- {n:"RG Cereales",img:["rg-1","rg-2"],es:"Logística de granos",en:"Grain logistics"},
- {n:"Docampo López",img:["docampo-1","docampo-2"],es:"Empresa · Productos",en:"Company · Products"},
- {n:"BANG",img:["bang-1","bang-2"],es:"Marketing digital",en:"Digital marketing"},
- {n:"La Web del Siglo",img:["laweb-1","laweb-2"],es:"Blog · Theme propio",en:"Blog · Custom theme"},
- {n:"EGEX",img:["egex-1","egex-2"],es:"Sitio web",en:"Website"}
+ {n:"Tecnogran",url:"https://tecnogran.com",img:["tecnogran-1","tecnogran-2"],es:"Insumos y fumigación",en:"Supplies and fumigation"},
+ {n:"RG Cereales",url:"https://rgcereales.com.ar",img:["rg-1","rg-2"],es:"Logística de granos",en:"Grain logistics"},
+ {n:"Docampo López",url:"https://docampolopez.com.ar",img:["docampo-1","docampo-2"],es:"Empresa · Productos",en:"Company · Products"},
+ {n:"BANG",url:"https://bang.com.ar",img:["bang-1","bang-2"],es:"Marketing digital",en:"Digital marketing"},
+ {n:"La Web del Siglo",url:"https://lawebdelsiglo.com.ar",img:["laweb-1","laweb-2"],es:"Blog · Theme propio",en:"Blog · Custom theme"},
+ {n:"EGEX",url:"https://egex.cl",img:["egex-1","egex-2"],es:"Sitio web",en:"Website"}
 ];
 const TEES=[
  ["tee-1","Al menos yo lo voy a intentar","#ff5470"],
@@ -314,8 +321,8 @@ const TEES=[
  ["tee-4","La marea no nos separa","#5b8cff"],
  ["tee-5","Discarne Crew '16","#ff7ad9"]
 ];
-const ART=[["1312","1312"],["amar-y-diferir","Amar y Diferir"],["bbgrl","BBGRL"],["chales-wilson","Chales Wilson · Post Tales"],["capitalizar-tristeza","Cómo capitalizar la tristeza"],["paso-a-paso","Paso a paso"],["snakes","Snakes on my neck"],["sleepy","Sleepy"],["testing","Testing"],["una-eternidad","Una eternidad"],["pulseless","Pulseless"],["lapsus","Lapsus"],["to2vale","To2vale"]];
-const BIG=new Set(["1312"]);
+const ART=[["capitalizar-tristeza","Cómo capitalizar la tristeza"],["pulseless","Pulseless"],["lapsus","Lapsus"],["amar-y-diferir","Amar y Diferir"],["bbgrl","BBGRL"],["chales-wilson","Chales Wilson · Post Tales"],["paso-a-paso","Paso a paso"],["snakes","Snakes on my neck"],["sleepy","Sleepy"],["1312","1312"],["to2vale","To2vale"],["una-eternidad","Una eternidad"],["testing","Testing"]];
+const BIG=new Set(["capitalizar-tristeza"]);
 
 let lang="es";
 const $=s=>document.querySelector(s),pad=n=>String(n).padStart(2,"0");
@@ -361,9 +368,9 @@ WEB.forEach((p,i)=>{
   const host=p.url?p.url.replace(/^https?:\/\//,""):p.n.toLowerCase().replace(/\s+/g,"");
   const tag=p.url?"a":"div";
   const card=document.createElement("article");card.className="card";
-  card.innerHTML=`<${tag} class="win" ${p.url?`href="${p.url}" target="_blank" rel="noopener"`:""} draggable="false">
+  card.innerHTML=`<div class="dev"><${tag} class="win" ${p.url?`href="${p.url}" target="_blank" rel="noopener"`:""} draggable="false">
    <div class="wbar"><div class="lights"><i></i><i></i><i></i></div><div class="url">${host}</div><span></span></div>
-   <div class="shot"><img class="a" src="assets/${p.img[0]}.webp" alt="${p.n}" ${i<2?"":'loading="lazy"'} draggable="false"><img class="b" src="assets/${p.img[1]}.webp" alt="" loading="lazy" draggable="false"></div></${tag}>
+   <div class="shot"><img class="a" src="assets/${p.img[0]}.webp" alt="${p.n}" ${i<2?"":'loading="lazy"'} draggable="false"><img class="b" src="assets/${p.img[1]}.webp" alt="" loading="lazy" draggable="false"></div></${tag}>${p.phone?`<${tag} class="phone" ${p.url?`href="${p.url}" target="_blank" rel="noopener" tabindex="-1"`:""} aria-hidden="true" draggable="false"><span class="pbody"><span class="pshot shot"><img class="a" src="assets/${p.phone[0]}.webp" alt="" ${i<2?"":'loading="lazy"'} draggable="false"><img class="b" src="assets/${p.phone[1]}.webp" alt="" loading="lazy" draggable="false"></span></span></${tag}>`:""}</div>
    <div class="meta"><h3>${p.n}</h3><span class="tg"></span></div>`;
   track.appendChild(card);
   const d=document.createElement("button");d.setAttribute("aria-label",p.n);d.onclick=()=>go(i);dotsEl.appendChild(d);
@@ -385,7 +392,7 @@ let down=false,sx=0,sl=0,moved=false;
 track.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse")return;down=true;moved=false;sx=e.clientX;sl=track.scrollLeft});
 addEventListener("pointermove",e=>{if(!down)return;const dx=e.clientX-sx;if(Math.abs(dx)>5){moved=true;track.classList.add("drag")}if(moved)track.scrollLeft=sl-dx});
 addEventListener("pointerup",()=>{if(!down)return;down=false;if(moved){track.classList.remove("drag");go(active);track.addEventListener("click",e=>{e.preventDefault();e.stopPropagation()},{capture:true,once:true})}});
-if(matchMedia("(hover: none)").matches){cards.forEach(c=>c.querySelector(".win").addEventListener("click",function(e){if(!c.classList.contains("active"))return;if(!this.classList.contains("flip")){e.preventDefault();this.classList.add("flip")}else this.classList.remove("flip")}))}
+if(matchMedia("(hover: none)").matches){cards.forEach(c=>{const d=c.querySelector(".dev");c.querySelector(".win").addEventListener("click",function(e){if(!c.classList.contains("active"))return;if(!d.classList.contains("flip")){e.preventDefault();d.classList.add("flip")}else d.classList.remove("flip")})})}
 
 let saved=null;try{saved=localStorage.getItem("lang")}catch(e){}
 setLang(saved||((navigator.language||"es").toLowerCase().startsWith("en")?"en":"es"));
