@@ -161,7 +161,7 @@ section.s{padding-block:clamp(48px,7vw,96px)}
 .vi:last-child{grid-column:1/-1;flex-direction:row;align-items:center}.vi:last-child img{width:42%}
 
 /* arte */
-.bento{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-auto-flow:dense;gap:10px}
+.bento{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-flow:dense;gap:10px}
 .tile{position:relative;aspect-ratio:1;overflow:hidden;border-radius:18px;background:var(--glass);border:0;padding:0;cursor:zoom-in;display:block}
 .tile.big{grid-column:span 2;grid-row:span 2}
 .tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
@@ -201,7 +201,7 @@ section.s{padding-block:clamp(48px,7vw,96px)}
   .vi{align-self:start}
   .vi{padding:4px;border-radius:14px}.vi span{display:none}
   .vi:last-child{grid-column:auto;flex-direction:column}.vi:last-child img{width:100%}
-  .bento{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .bento{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:520px){.bento{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -314,8 +314,8 @@ const TEES=[
  ["tee-4","La marea no nos separa","#5b8cff"],
  ["tee-5","Discarne Crew '16","#ff7ad9"]
 ];
-const ART=[["1312","1312"],["amar-y-diferir","Amar y Diferir"],["bbgrl","BBGRL"],["chales-wilson","Chales Wilson · Post Tales"],["capitalizar-tristeza","Cómo capitalizar la tristeza"],["miru-vuelo","Miru · Vuelo"],["paso-a-paso","Paso a paso"],["snakes","Snakes on my neck"],["sleepy","Sleepy"],["testing","Testing"],["una-eternidad","Una eternidad"],["pulseless","Pulseless"],["lapsus","Lapsus"],["to2vale","To2vale"]];
-const BIG=new Set(["1312","snakes"]);
+const ART=[["1312","1312"],["amar-y-diferir","Amar y Diferir"],["bbgrl","BBGRL"],["chales-wilson","Chales Wilson · Post Tales"],["capitalizar-tristeza","Cómo capitalizar la tristeza"],["paso-a-paso","Paso a paso"],["snakes","Snakes on my neck"],["sleepy","Sleepy"],["testing","Testing"],["una-eternidad","Una eternidad"],["pulseless","Pulseless"],["lapsus","Lapsus"],["to2vale","To2vale"]];
+const BIG=new Set(["1312"]);
 
 let lang="es";
 const $=s=>document.querySelector(s),pad=n=>String(n).padStart(2,"0");
