@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://augustobellini.github.io/sitemap.xml
